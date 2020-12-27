@@ -18,7 +18,7 @@ server.starttls()
 server.ehlo()
 
 
-server.login(os.getenv("email"), os.getenv("Password"))
+server.login(os.getenv("Email"), os.getenv("Password"))
 
 msg = MIMEMultipart()
 msg["From"] = "Mohammed Mubashir Hasan"
@@ -32,14 +32,12 @@ msg.attach(MIMEText(message, "plain"))
 
 filename = "photo.jpg"
 
-attachment = open(filename, "rb")
-
+attachment = open(filename,'rb')
 p = MIMEBase("application", "octet-stream")
 p.set_payload(attachment.read())
-
 encoders.encode_base64(p)
-
-p.add_header("Content-Deposition", "filename")
+p.add_header("Content-Deposition", f"attachment, filename={filename}")
+msg.attach(p)
 text = msg.as_string()
 
-server.sendmail(os.getenv("email"), os.getenv("sendEmail"), text)
+server.sendmail(os.getenv("SendEmail"), os.getenv("SendEmail"), text)
