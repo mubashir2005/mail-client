@@ -4,14 +4,20 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 
-server = smtplib.SMTP("smtp.gmail.com ", 465)
+# config for getting secrets from env
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+# config ends
+
+server = smtplib.SMTP("smtp.gmail.com", 587)
+server.starttls()
 
 server.ehlo()
 
-with open("password.txt", "r") as f:
-    password = f.read()
 
-server.login("mubashirhasan716@gmail.com", password)
+server.login("mubashirhasan716@gmail.com", os.getenv("Password"))
 
 msg = MIMEMultipart()
 msg["From"] = "mubashirhasan716@gmail.com"
@@ -32,7 +38,7 @@ p.set_payload(attachment.read())
 
 encoders.encode_base64(p)
 
-p.add_header("Content-Deposition", 'filename')
+p.add_header("Content-Deposition", "filename")
 text = msg.as_string()
 
 server.sendmail("mubashirhasan716@gmail.com", "mubashirhasan2005@outlook.com", text)
